@@ -1,0 +1,112 @@
+[project]
+name = "deepagents-chromafs"
+version = "0.1.0"
+
+description = "ChromaDB virtual filesystem backend for deepagents — instant session creation, zero marginal compute cost."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11,<4.0"
+keywords = ["agents", "ai", "llm", "langgraph", "chromadb", "filesystem", "rag", "deepagents"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "deepagents>=0.5.0,<1.0.0",
+    "chromadb>=0.5.0",
+    "wcmatch>=10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov",
+    "ruff>=0.12.0",
+    "ty>=0.0.1",
+    "twine",
+    "build",
+]
+
+[project.urls]
+Repository = "https://github.com/your-org/deepagents-chromafs"
+Issues = "https://github.com/your-org/deepagents-chromafs/issues"
+
+[build-system]
+requires = ["setuptools>=73.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["deepagents_chromafs*"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed", "*.md"]
+
+[tool.ruff]
+line-length = 150
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812",  # Trailing comma missing — conflicts with ruff formatter
+    "ISC001",  # Implicit string concatenation — conflicts with ruff formatter
+    "PERF203", # try-except in loop — only overhead when exceptions are common
+    "SLF001",  # Private member access
+    "PLR0913", # Too many arguments
+    "PLC0414", # Import alias — conflicts with type-checker re-export conventions
+]
+unfixable = ["B028"]
+extend-safe-fixes = ["PLR6201"]
+
+[tool.ruff.lint.pyupgrade]
+keep-runtime-typing = true
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+force-single-line = false
+combine-as-imports = true
+known-first-party = ["deepagents_chromafs"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+ignore-var-parameters = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "ANN001", "ANN201", "ANN202", "ANN003",
+    "ARG002",
+    "D1",
+    "ERA001",
+    "PLR2004",
+    "PT018",
+    "S101",
+    "S311",
+]
+"scripts/**" = [
+    "BLE001",
+    "INP001",
+    "T201",  # print() allowed in scripts
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "--tb=short"
+
+[tool.ty.environment]
+python-version = "3.11"
