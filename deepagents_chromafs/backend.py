@@ -87,12 +87,26 @@ class ChromaFsBackend(BackendProtocol):
         user_groups: frozenset[str] | None = None,
         slug_field: str = "page_slug",
         chunk_index_field: str = "chunk_index",
+        cache: ContentCache | None = None,
     ) -> None:
-        """Initialize the backend and bootstrap the in-memory path tree."""
+        """Initialize the backend and bootstrap the in-memory path tree.
+
+        Args:
+            collection: A ChromaDB collection that follows the ChromaFs schema.
+            user_groups: Optional set of groups for RBAC path filtering.
+            slug_field: Metadata field name that stores the page slug on each
+                chunk document.
+            chunk_index_field: Metadata field name that stores the integer chunk
+                ordering on each chunk document.
+            cache: Optional content cache instance.  Defaults to an in-memory
+                ``ContentCache``.  Pass a ``RedisContentCache`` (or any
+                ``ContentCache`` subclass) to share the cache across sessions or
+                workers.
+        """
         self._collection = collection
         self._slug_field = slug_field
         self._chunk_index_field = chunk_index_field
-        self._cache = ContentCache()
+        self._cache = cache if cache is not None else ContentCache()
         self._tree = self._bootstrap_tree(user_groups)
 
     # ------------------------------------------------------------------

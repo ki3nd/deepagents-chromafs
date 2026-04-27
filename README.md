@@ -53,6 +53,14 @@ Or with `uv`:
 uv add deepagents-chromafs
 ```
 
+With Redis cache support:
+
+```bash
+pip install deepagents-chromafs[redis]
+# or
+uv add deepagents-chromafs[redis]
+```
+
 ---
 
 ## Quick start
@@ -106,6 +114,30 @@ backend = ChromaFsBackend(
     chunk_index_field="seq",      # default: "chunk_index"
 )
 ```
+
+### Redis cache (multi-session / multi-worker)
+
+By default, page content is cached in-memory for the lifetime of the
+`ChromaFsBackend` instance.  For multi-session or multi-worker deployments,
+plug in `RedisContentCache` to share the cache across processes:
+
+```python
+import redis
+from deepagents_chromafs import ChromaFsBackend
+from deepagents_chromafs.redis_cache import RedisContentCache
+
+cache = RedisContentCache(
+    redis.Redis(host="localhost", port=6379, db=0),
+    prefix="myapp",   # namespace — avoids key collisions between collections
+    ttl=3600,         # seconds; 0 = no expiry
+)
+
+backend = ChromaFsBackend(collection, cache=cache)
+```
+
+Any `ContentCache` subclass is accepted, so you can wire in other backends
+(Memcached, DynamoDB, etc.) by subclassing `ContentCache` and overriding
+`get`, `put`, `has`, and `clear`.
 
 ---
 
