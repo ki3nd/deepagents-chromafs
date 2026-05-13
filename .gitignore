@@ -30,6 +30,9 @@ htmlcov/
 .mypy_cache/
 .ty_cache/
 
+# Node.js
+node_modules/
+
 # Editors
 .vscode/
 .idea/
