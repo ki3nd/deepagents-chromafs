@@ -1,5 +1,7 @@
 # deepagents-chromafs
 
+[![PyPI version](https://img.shields.io/pypi/v/deepagents-chromafs.svg)](https://pypi.org/project/deepagents-chromafs/)
+
 A read-only [`BackendProtocol`](https://github.com/langchain-ai/deepagents) backend for [DeepAgents](https://github.com/langchain-ai/deepagents) that treats a [ChromaDB](https://www.trychroma.com/) collection as a virtual filesystem.
 
 Inspired by the [ChromaFs algorithm from Mintlify](https://mintlify.com/blog/chromafs): replace expensive sandbox boot (~46 s) with an in-memory virtual filesystem bootstrapped from a single Chroma document (~100 ms).
